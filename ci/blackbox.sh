@@ -48,6 +48,8 @@ PERF_CLASS=0
 REBUILD=2
 TEMPBUILD=0
 LOGFILE=run.log
+SYNTHESIZE=0
+SYNTH_BUILD_PATH=
 
 for i in "$@"
 do
@@ -141,9 +143,13 @@ case $DRIVER in
         ;;
     opae)
         DRIVER_PATH=$ROOT_DIR/runtime/opae
+        SYNTH=1
+        SYNTH_BUILD_PATH=$ROOT_DIR/hw/syn/altera/opae
         ;;
     xrt)
         DRIVER_PATH=$ROOT_DIR/runtime/xrt
+        SYNTH=1
+        SYNTH_BUILD_PATH=$ROOT_DIR/hw/syn/xilinx/xrt
         ;;
     *)
         echo "invalid driver: $DRIVER"
@@ -194,6 +200,7 @@ then
     if [ $REBUILD -eq 1 ] || [ "$CONFIGS+$DEBUG+$SCOPE" != "$LAST_CONFIGS" ];
     then
         make -C $DRIVER_PATH clean-driver > /dev/null
+        NUM_CORES=$CORES make -C $SYNTH_BUILD_PATH clean
         echo "$CONFIGS+$DEBUG+$SCOPE" > $BLACKBOX_CACHE
     fi
 fi
@@ -286,6 +293,11 @@ else
             echo "running: DESTDIR=$TEMPDIR/$DRIVER CONFIGS=$CONFIGS make -C $DRIVER_PATH"
             DESTDIR="$TEMPDIR/$DRIVER" CONFIGS="$CONFIGS" make -C $DRIVER_PATH > /dev/null
         fi
+        if [ $SYNTH -eq 1 ]
+        then
+            echo "running: DESTDIR=$TEMPDIR/$DRIVER NUM_CORES=$CORES make -C $SYNTH_BUILD_PATH"
+            DESTDIR="$TEMPDIR/$DRIVER" NUM_CORES=$CORES make -C $SYNTH_BUILD_PATH # > /dev/null
+        fi
 
         # running application
         if [ $HAS_ARGS -eq 1 ]
@@ -311,6 +323,11 @@ else
         else
             echo "running: CONFIGS=$CONFIGS make -C $DRIVER_PATH"
             CONFIGS="$CONFIGS" make -C $DRIVER_PATH > /dev/null
+        fi
+        if [ $SYNTH -eq 1 ]
+        then
+            echo "running: NUM_CORES=$CORES make -C $SYNTH_BUILD_PATH"
+            NUM_CORES=$CORES make -C $SYNTH_BUILD_PATH # > /dev/null
         fi
 
         # running application
