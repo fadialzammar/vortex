@@ -3,7 +3,7 @@ include $(ROOT_DIR)/config.mk
 
 DEVICE_FAMILY ?= arria10
 
-PREFIX ?= build$(XLEN)
+# PREFIX ?= build$(XLEN)
 TARGET ?= fpga
 NUM_CORES ?= 1
 
@@ -16,7 +16,8 @@ SCRIPT_DIR := $(VORTEX_HOME)/hw/scripts
 
 IP_CACHE_DIR := $(ROOT_DIR)/hw/syn/altera/ip_cache/$(DEVICE_FAMILY)
 
-BUILD_DIR := $(PREFIX)_$(DEVICE_FAMILY)_$(TARGET)_$(NUM_CORES)c
+# BUILD_DIR := $(PREFIX)_$(DEVICE_FAMILY)_$(TARGET)_$(NUM_CORES)c
+BUILD_DIR ?= build_$(DEVICE_FAMILY)_$(TARGET)_$(NUM_CORES)c
 
 ifeq ($(shell which qsub-synth),)
 	RUN_SYNTH=$(OPAE_PLATFORM_ROOT)/bin/run.sh > build.log 2>&1 &

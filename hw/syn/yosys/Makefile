@@ -4,7 +4,7 @@ include $(ROOT_DIR)/config.mk
 SRC_DIR := $(VORTEX_HOME)/hw/syn/yosys
 
 TOP_LEVEL_ENTITY ?= Vortex
-PREFIX ?= build
+# PREFIX ?= build
 NUM_CORES ?= 1
 
 SCRIPT_DIR := $(VORTEX_HOME)/hw/scripts
@@ -14,7 +14,8 @@ CP = cp -rf
 RMDIR = rm -rf
 ECHO = @echo
 
-BUILD_DIR := $(PREFIX)_$(TOP_LEVEL_ENTITY)
+# BUILD_DIR := $(PREFIX)_$(TOP_LEVEL_ENTITY)
+BUILD_DIR := build_$(TOP_LEVEL_ENTITY)
 BIN_DIR := $(BUILD_DIR)/bin
 
 # control RTL debug tracing states

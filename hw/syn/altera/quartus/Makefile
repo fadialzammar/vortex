@@ -1,9 +1,10 @@
 ROOT_DIR := $(realpath ../../../..)
 include $(ROOT_DIR)/config.mk
 
-PREFIX ?= build
+# PREFIX ?= build
 
-BUILD_DIR := $(PREFIX)_$(DEVICE_FAMILY)
+# BUILD_DIR := $(PREFIX)_$(DEVICE_FAMILY)
+BUILD_DIR ?= build_$(DEVICE_FAMILY)
 
 SCRIPT_DIR := $(VORTEX_HOME)/hw/scripts
 
