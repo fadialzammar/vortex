@@ -48,7 +48,7 @@ PERF_CLASS=0
 REBUILD=2
 TEMPBUILD=0
 LOGFILE=run.log
-SYNTHESIZE=0
+SYNTH=0
 SYNTH_BUILD_PATH=
 
 for i in "$@"
@@ -150,6 +150,7 @@ case $DRIVER in
         DRIVER_PATH=$ROOT_DIR/runtime/xrt
         SYNTH=1
         SYNTH_BUILD_PATH=$ROOT_DIR/hw/syn/xilinx/xrt
+        export FPGA_BIN_DIR="${FPGA_BIN_DIR:-${SYNTH_BUILD_PATH}/build_${PLATFORM}_${TARGET}_${NUM_CORES}c/bin}"
         ;;
     *)
         echo "invalid driver: $DRIVER"
